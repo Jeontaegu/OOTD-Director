@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>나만의 TPO 코디 추천기</title>
+    <!-- 빠르고 세련된 디자인을 위해 Tailwind CSS 사용 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        /* 선택 박스 기본 스타일링 (모바일 최적화 및 터치 영역 확보) */
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden">
+        <div class="bg-gray-900 text-white p-6 text-center">
+            <h1 class="text-2xl font-bold tracking-tight">OOTD Director 👗</h1>
+            <p class="text-sm text-gray-300 mt-2">오늘 당신의 완벽한 하루를 위한 맞춤 코디</p>
+        </div>
+
+        <div class="p-6 space-y-5">
+            <!-- 0. 성별 -->
+            <div>
+                <label for="gender" class="block text-sm font-semibold text-gray-700 mb-1">성별 👫</label>
+                <select id="gender" class="w-full border border-gray-300 text-gray-900 rounded-xl focus:ring-gray-900 focus:border-gray-900 block p-3 shadow-sm transition-colors cursor-pointer">
+                    <option value="woman">여성</option>
+                    <option value="man">남성</option>
+                </select>
+            </div>
+            
+            <!-- 1. 날씨 -->
+            <div>
+                <label for="weather" class="block text-sm font-semibold text-gray-700 mb-1">날씨 ☀️❄️</label>
+                <select id="weather" class="w-full border border-gray-300 text-gray-900 rounded-xl focus:ring-gray-900 focus:border-gray-900 block p-3 shadow-sm transition-colors cursor-pointer">
+                    <option value="spring_fall">봄/가을 (선선함)</option>
+                    <option value="summer">여름 (더움)</option>
+                    <option value="winter">겨울 (추움)</option>
+                </select>
+            </div>
+
+            <!-- 2. 시간 -->
+            <div>
+                <label for="time" class="block text-sm font-semibold text-gray-700 mb-1">시간 🕒</label>
+                <select id="time" class="w-full border border-gray-300 text-gray-900 rounded-xl focus:ring-gray-900 focus:border-gray-900 block p-3 shadow-sm transition-colors cursor-pointer">
+                    <option value="day">낮</option>
+                    <option value="night">밤</option>
+                </select>
+            </div>
+
+            <!-- 4. 상황 -->
+            <div>
+                <label for="occasion" class="block text-sm font-semibold text-gray-700 mb-1">상황 (목적) 🎯</label>
+                <select id="occasion" class="w-full border border-gray-300 text-gray-900 rounded-xl focus:ring-gray-900 focus:border-gray-900 block p-3 shadow-sm transition-colors cursor-pointer">
+                    <option value="wedding">결혼식 (하객)</option>
+                    <option value="funeral">장례식 (조문)</option>
+                    <option value="interview">면접 (포멀)</option>
+                    <option value="exercise">운동 (액티브)</option>
+                    <option value="party">파티 (모임)</option>
+                    <option value="date">데이트 (로맨틱)</option>
+                    <option value="vacation">휴가 (여행)</option>
+                </select>
+            </div>
+
+            <!-- 5. 스타일 -->
+            <div>
+                <label for="style" class="block text-sm font-semibold text-gray-700 mb-1">선호 스타일 ✨</label>
+                <select id="style" class="w-full border border-gray-300 text-gray-900 rounded-xl focus:ring-gray-900 focus:border-gray-900 block p-3 shadow-sm transition-colors cursor-pointer">
+                    <option value="basic">무난한 스타일</option>
+                    <option value="simple">심플한 스타일</option>
+                    <option value="fancy">화려한 스타일</option>
+                    <option value="unique">개성있는 스타일</option>
+                </select>
+            </div>
+
+            <button onclick="generateRecommendation()" class="w-full mt-4 bg-gray-900 hover:bg-black text-white font-bold py-3.5 px-4 rounded-xl shadow-lg transform transition active:scale-95">
+                코디 추천받기
+            </button>
+
+            <!-- 결과 박스 (초기에는 숨김 처리) -->
+            <div id="result-box" class="hidden mt-6 p-5 bg-gray-50 border border-gray-200 rounded-xl">
+                <h3 class="text-lg font-bold text-gray-900 mb-2">💡 추천 코디 제안</h3>
+                <p id="result-text" class="text-gray-700 text-sm leading-relaxed mb-4">
+                    <!-- 추천 텍스트가 들어갈 자리 -->
+                </p>
+                
+                <!-- 구글 이미지 검색 링크 버튼 -->
+                <a id="search-link" href="#" target="_blank" class="flex items-center justify-center w-full bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 font-semibold py-3 px-4 rounded-xl transition-colors">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    이 코디 구글에서 찾아보기
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function generateRecommendation() {
+            // 1. 사용자가 선택한 값들 가져오기
+            const gender = document.getElementById('gender').value;
+            const weather = document.getElementById('weather').value;
+            const time = document.getElementById('time').value;
+            const occasion = document.getElementById('occasion').value;
+            const style = document.getElementById('style').value;
+
+            let outfitDesc = "";
+            let searchKeyword = ""; // 구글 검색을 위한 한글 키워드
+            
+            // 성별에 따른 기본 키워드 및 호칭 설정
+            const genderText = gender === 'man' ? '남자' : '여자';
+
+            // 2. 로직 설계 (상황이 가장 큰 기준이 됨)
+            if (occasion === 'funeral') {
+                outfitDesc = `장례식 조문을 위한 ${genderText} 코디네요. 스타일이나 날씨보다 예의가 가장 중요합니다. 단정한 검은색 정장과 검은 구두를 착용해 주세요.`;
+                searchKeyword = `${genderText} 장례식 복장 검은색 정장`;
+                if(weather === 'winter') {
+                    outfitDesc += " 밖이 추우니 검은색이나 어두운 톤의 싱글 코트를 걸치는 것을 추천합니다.";
+                    searchKeyword = `${genderText} 겨울 장례식 복장 코트`;
+                }
+            
+            } else if (occasion === 'interview') {
+                outfitDesc = `중요한 면접이군요! 신뢰감을 줄 수 있는 네이비 또는 다크 그레이 색상의 깔끔한 ${genderText} 정장 셋업을 추천합니다.`;
+                searchKeyword = `${genderText} 면접 복장 정장`;
+                if (style === 'simple') {
+                    if(gender === 'man') {
+                        outfitDesc = "심플함을 원하신다면 넥타이를 생략한 깔끔한 화이트 셔츠에 핏이 좋은 슬랙스를 매치한 비즈니스 캐주얼도 좋습니다.";
+                        searchKeyword = `남자 면접 비즈니스 캐주얼 노타이`;
+                    } else {
+                        outfitDesc = "심플함을 원하신다면 깔끔한 실크 블라우스에 미디 기장의 펜슬 스커트나 슬랙스를 매치해 보세요.";
+                        searchKeyword = `여자 면접 복장 실크 블라우스 슬랙스`;
+                    }
+                }
+                if (weather === 'summer') outfitDesc += " 날씨가 덥더라도 얇은 소재의 긴팔 셔츠(블라우스)를 입는 것이 격식에 맞습니다.";
+
+            } else if (occasion === 'exercise') {
+                if (weather === 'summer') {
+                    outfitDesc = `더운 여름날 운동이시군요! 땀 배출이 잘 되는 밝은 색상의 기능성 반팔 티셔츠와 통풍이 잘 되는 가벼운 ${genderText} 쇼츠를 추천합니다.`;
+                    searchKeyword = `${genderText} 여름 운동복 코디`;
+                } else if (weather === 'winter') {
+                    outfitDesc = "추운 날씨 운동에는 체온 유지가 필수입니다. 활동성 좋은 조거 팬츠에 얇은 윈드브레이커를 여러 겹 레이어드하여 입는 것을 추천합니다.";
+                    searchKeyword = `${genderText} 겨울 런닝 복장 레이어드`;
+                } else {
+                    outfitDesc = `활동하기 편한 ${genderText} 애슬레저 룩이나 스포티한 캐주얼 룩을 추천합니다.`;
+                    searchKeyword = `${genderText} 실내 운동복 코디`;
+                }
+                
+                if (style === 'fancy') outfitDesc += " 형광색이나 패턴이 들어간 운동화로 화려하게 포인트를 줘도 멋질 것 같습니다.";
+                else if (style === 'unique') outfitDesc += " 흔하지 않은 절개 디테일이 들어간 탑이나 레트로 감성의 트랙팬츠로 힙하게 개성을 뽐내보세요.";
+
+            } else if (occasion === 'wedding') {
+                if (style === 'fancy') {
+                    if(gender === 'man') {
+                        outfitDesc = "화려한 하객룩을 원하신다면, 어두운 톤의 정장에 은은한 패턴이 들어간 셔츠나 행거치프로 센스 있는 포인트를 줘보세요.";
+                        searchKeyword = `남자 결혼식 하객룩 화려한 셔츠 포인트`;
+                    } else {
+                        outfitDesc = "화려한 하객룩을 원하신다면, 화이트를 제외한 쨍한 컬러의 실크 원피스나 화려한 트위드 셋업을 추천합니다.";
+                        searchKeyword = `여자 결혼식 하객룩 컬러 원피스 트위드`;
+                    }
+                } else if (style === 'unique') {
+                    if(gender === 'man') {
+                        outfitDesc = "남들과는 다른 개성 있는 하객룩! 오버핏 셋업 수트나 와이드 팬츠를 매치하여 트렌디하고 감각적인 무드를 연출해 보세요.";
+                        searchKeyword = `남자 트렌디 하객룩 오버핏 셋업 와이드팬츠`;
+                    } else {
+                        outfitDesc = "남들과는 다른 개성 있는 하객룩! 매니시한 오버핏 수트 셋업이나 유니크한 컷아웃 디테일의 원피스로 멋스러움을 더해보세요.";
+                        searchKeyword = `여자 하객룩 오버핏 수트 유니크 셋업`;
+                    }
+                } else if (style === 'simple') {
+                    outfitDesc = `깔끔한 무채색 계열의 셋업 안에 이너를 가볍게 매치하여 심플하고 세련된 느낌을 연출해 보세요.`;
+                    searchKeyword = `${genderText} 결혼식 하객룩 깔끔한 셋업`;
+                } else {
+                    outfitDesc = `가장 무난하고 실패 없는 하객룩! 핏이 좋은 ${gender === 'man' ? '네이비 블레이저와 베이지색 슬랙스' : '블랙 원피스나 뉴트럴톤 투피스'} 조합을 추천합니다.`;
+                    searchKeyword = gender === 'man' ? `남자 하객룩 네이비 블레이저 베이지 슬랙스` : `여자 하객룩 블랙 원피스 투피스`;
+                }
+                if (weather === 'summer') outfitDesc += " 더운 날씨를 고려해 시원한 린넨 소재를 활용하는 것도 좋은 선택입니다.";
+
+            } else if (occasion === 'party') {
+                if (style === 'fancy') {
+                    outfitDesc = `오늘 파티의 주인공은 당신! 시선을 사로잡는 화려한 패턴의 상의나, 질감이 독특한 소재로 유니크한 ${genderText} 룩을 연출해보세요.`;
+                    searchKeyword = `${genderText} 화려한 연말 파티룩 코디`;
+                } else if (style === 'unique') {
+                    outfitDesc = `평범함을 거부하는 개성 만점 ${genderText} 파티룩! 서로 다른 소재(가죽, 실크, 데님 등)를 과감하게 믹스매치하거나 아방가르드한 아이템을 메인으로 삼아보세요.`;
+                    searchKeyword = `${genderText} 파티룩 믹스매치 힙한 유니크`;
+                } else if (style === 'simple') {
+                    outfitDesc = "심플즈 베스트! 군더더기 없는 올블랙 코디에 시계나 가방, 신발 한 곳에만 힘을 주어 고급스러운 파티룩을 완성해 보세요.";
+                    searchKeyword = `${genderText} 심플 올블랙 파티룩 코디`;
+                } else {
+                    outfitDesc = `파티 분위기에 맞는 단정한 스마트 캐주얼 룩을 추천합니다. 깔끔한 데님 팬츠 위에 세련된 재킷을 걸쳐주세요.`;
+                    searchKeyword = `${genderText} 스마트 캐주얼 파티룩 청바지 재킷`;
+                }
+                if (time === 'night') outfitDesc += " 밤 시간대 파티이므로 짙은 색상의 옷이 조명 아래서 더욱 멋스럽게 보일 것입니다.";
+            
+            } else if (occasion === 'date') {
+                if (style === 'fancy') {
+                    outfitDesc = `특별한 데이트를 위해 신경 쓴 티가 나는 화려한 ${genderText} 룩을 추천합니다. 포인트 컬러가 들어간 아우터나 트렌디한 액세서리로 매력을 뽐내보세요.`;
+                    searchKeyword = `${genderText} 데이트 화려한 코디`;
+                } else if (style === 'unique') {
+                    outfitDesc = `나만의 매력을 확실히 어필할 수 있는 개성 있는 ${genderText} 데이트룩! 빈티지한 아이템이나 트렌디한 고프코어/스트릿 요소를 섞어 힙한 무드를 연출해 보세요.`;
+                    searchKeyword = `${genderText} 힙한 데이트룩 스트릿 고프코어`;
+                } else if (style === 'simple') {
+                    outfitDesc = `꾸안꾸 스타일의 정석! 깔끔한 핏의 무지 상의에 단정한 슬랙스나 데님을 매치하여 세련된 ${genderText} 데이트룩을 완성해 보세요.`;
+                    searchKeyword = `${genderText} 데이트 심플 꾸안꾸 코디`;
+                } else {
+                    outfitDesc = `설레는 데이트 날이군요! 호불호 없는 깔끔하고 로맨틱한 ${gender === 'man' ? '남친룩' : '여친룩'} 스타일을 추천합니다.`;
+                    searchKeyword = gender === 'man' ? `남자 남친룩 데이트 코디` : `여자 여친룩 데이트 코디`;
+                }
+                if (weather === 'winter') outfitDesc += " 날씨가 추우니 따뜻하면서도 핏을 살려주는 예쁜 코트를 걸쳐주면 완벽합니다.";
+                if (time === 'night') outfitDesc += " 저녁 데이트라면 조금 더 차분하고 분위기 있는 어두운 톤을 섞어보세요.";
+
+            } else if (occasion === 'vacation') {
+                if (weather === 'summer') {
+                    outfitDesc = `즐거운 여름 휴가! 사진이 잘 나오는 쨍한 컬러의 상의나 시원한 린넨 원피스/셔츠, 가벼운 샌들로 완벽한 바캉스 룩을 연출해 보세요.`;
+                    searchKeyword = `${genderText} 여름 바캉스룩 휴양지 코디`;
+                } else if (weather === 'winter') {
+                    outfitDesc = `겨울 여행을 떠나시네요! 보온성이 뛰어난 예쁜 컬러감의 패딩이나 무스탕에 포근한 목도리를 매치하여 따뜻하고 사진찍기 좋은 룩을 추천합니다.`;
+                    searchKeyword = `${genderText} 겨울 여행 코디 사진`;
+                } else {
+                    outfitDesc = `어디로 떠나시든 편안함이 최고죠! 장시간 이동에도 편안하면서 스타일리시한 와이드 팬츠와 레이어드 하기 좋은 가디건 조합을 추천합니다.`;
+                    searchKeyword = `${genderText} 봄가을 여행 편안한 꾸안꾸 코디`;
+                }
+                
+                if (style === 'fancy') outfitDesc += " 챙이 넓은 모자나 선글라스 등 바캉스 감성을 한껏 끌어올려 줄 화려한 소품을 잊지 마세요!";
+                else if (style === 'unique') outfitDesc += " 남들과 똑같은 휴가룩은 NO! 에스닉한 패턴의 로브나 비비드한 컬러 조합으로 여행지의 패셔니스타가 되어보세요!";
+            }
+
+            // 3. UI 업데이트 
+            const resultBox = document.getElementById('result-box');
+            const resultText = document.getElementById('result-text');
+            const searchLink = document.getElementById('search-link');
+
+            // 텍스트 출력
+            resultText.innerText = outfitDesc;
+            
+            // 구글 이미지 검색 링크 설정 (검색어를 URL 인코딩 처리)
+            const googleSearchUrl = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(searchKeyword)}`;
+            searchLink.href = googleSearchUrl;
+            
+            // 결과 박스 표시 및 부드러운 애니메이션 효과
+            resultBox.classList.remove('hidden');
+            resultBox.animate([
+                { opacity: 0, transform: 'translateY(-10px)' },
+                { opacity: 1, transform: 'translateY(0)' }
+            ], { duration: 400, easing: 'ease-out' });
+        }
+    </script>
+</body>
+</html>
