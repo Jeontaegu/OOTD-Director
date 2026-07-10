@@ -32,6 +32,7 @@ Vanilla JavaScript
 이 코디 구글에서 찾아보기 버튼을 클릭하여 실제 스타일링 이미지를 참고합니다.
 
 ##스크린샷
+
 <img width="617" height="902" alt="스크린샷 2026-07-10 121538" src="https://github.com/user-attachments/assets/9665ca2a-e4f6-41f0-9766-2c2531e89025" />
 <img width="596" height="905" alt="스크린샷 2026-07-10 121557" src="https://github.com/user-attachments/assets/18d0262c-7583-4688-b7d2-3f3c71141796" />
 <img width="1855" height="655" alt="스크린샷 2026-07-10 121700" src="https://github.com/user-attachments/assets/3df042d7-918c-480e-b52b-dcb9d87dc2c5" />
