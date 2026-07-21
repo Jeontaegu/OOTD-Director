@@ -5,11 +5,8 @@
 
 ##스크린샷
 
-<img width="617" height="902" alt="스크린샷 2026-07-10 121538" src="https://github.com/user-attachments/assets/9665ca2a-e4f6-41f0-9766-2c2531e89025" />
-<img width="596" height="905" alt="스크린샷 2026-07-10 121557" src="https://github.com/user-attachments/assets/18d0262c-7583-4688-b7d2-3f3c71141796" />
-<img width="1855" height="655" alt="스크린샷 2026-07-10 121700" src="https://github.com/user-attachments/assets/3df042d7-918c-480e-b52b-dcb9d87dc2c5" />
-<img width="567" height="906" alt="스크린샷 2026-07-10 122034" src="https://github.com/user-attachments/assets/e18e7a83-b19c-4742-8de2-a2ca84e5a389" />
-<img width="1853" height="881" alt="스크린샷 2026-07-10 121909" src="https://github.com/user-attachments/assets/26f5fe88-7491-46c2-9aff-3e8e79eb8f15" />
+<img width="505" height="911" alt="스크린샷 2026-07-21 172608" src="https://github.com/user-attachments/assets/381f8115-2017-475f-b520-8b95b11e71de" />
+<img width="471" height="910" alt="스크린샷 2026-07-21 172641" src="https://github.com/user-attachments/assets/d7c0b531-a76f-48db-8c2c-ddf4ac2c1f49" />
 
 ---
 
